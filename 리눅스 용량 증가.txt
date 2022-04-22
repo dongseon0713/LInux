@@ -1,0 +1,30 @@
+리눅스 용량 늘리기
+
+1. HDD추가
+2. fdisk /dev/sdb
+  n -> 엔터 -> 엔터 -> 엔터 -> 엔터 -> 엔터 -> w
+
+3. pvcreate /dev/sdb1
+
+4. pvscan 으로 PV확인
+
+pvscan
+  PV /dev/sda2   VG centos          lvm2 [<79.00 GiB / 4.00 MiB free]
+  PV /dev/sdb1                      lvm2 [<20.00 GiB]
+  Total: 2 [<99.00 GiB] / in use: 1 [<79.00 GiB] / in no VG: 1 [<20.00 GiB
+
+
+5. pvscan에 나온 VG 그룹에 확장
+
+# vgextend centos /dev/sdb1
+  Volume group "centos" successfully extended
+
+6. lv확인 : df -h로 확인 
+lvresize /dev/mapper/centos-root /dev/sdb1
+
+# lvextend /dev/mapper/centos-root -l +5119
+  Size of logical volume centos/root changed from 50.00 GiB (12800 extents) to <70.00 GiB (17919 extents).
+  Logical volume centos/root successfully resized.
+
+7. xfs_growfs /dev/mapper/centos-root
+

@@ -1,0 +1,85 @@
+# CM(Cloudera Manager)
+ [주요 기능]
+- 프로비저닝 : 하둠 에코시스템을 편리하게 설치, 삭제, 수정 관리
+- 매니지먼트 : 설치한 에코시스템의 설정 변경 및 최적화 지원
+- 모니터링 : 하드웨어 리소스 및 설치 컴포넌트의 상태 모니터링/대시보드
+
+[VMware 설정] 2개 기준
+- CPU : 2이상
+- RAM : 5G
+- HDD : 80G
+
+[Linux 설치 후 작업 : CentOS 7 (기본)]
+
+[공통작업]
+sudo vim /etc/hosts
+192.168.56.101 server01.hadoop.com
+192.168.56.101 server02.hadoop.com
+
+sudo systemctl stop firewalld
+sudo systemctl disable firewalld
+
+iptables -F
+iptables-save
+
+sudo vim /etc/sysconfig/selinux
+SELINUX=enforcing ->disabled
+
+각각의 호스트 이름 
+sudo vim /etc/hostname에서 변경
+server01.hadoop.com 이나 server02.hadoop.com 변경
+
+**NTP 문제 발생
+sudo systemctl restart chronyd
+
+경고로 작업해야 할 내용
+
+echo never > /sys/kernel/mm/transparent_hugepage/defrag
+echo never > /sys/kernel/mm/transparent_hugepage/enabled
+
+# sudo sysctl vm.swappiness
+vm.swappiness = 30
+# sudo sysctl vm.swappiness = 10
+vm.swappiness = 10
+
+## cloudera manager 설치(root로 변경, sudo -i or su root)
+-> wget https://archive.cloudera.com/cm7/7.4.4/cloudera-manager-installer.bin
+-> chmod u+x cloudera-manager-installer.bin
+-> ./cloudera-manager-installer.bin
+
+## 삭제해야하는 경우 
+-> sudo /opt/cloudera/installer/uninstall-cloudera-manager.sh
+
+
+
+http://server01.hadoop.com:7180/
+(http://192.168.56.101:7180/
+admin / admin
+
+windows -> system32 -> dirvers -> etc -> hosts
+192.168.56.101 server01.hadoop.com
+192.168.56.102 server02.hadoop.com
+192.168.56.103 server03.hadoop.com
+쓰고 저장
+
+vim /var/lib/cloudera-scm-server-db/data/pg_hba.conf 
+커서 아래로 쭉 내려서 
+# block remote access for admin user and scm 를 찾은 뒤에 맨 뒤에를 md5로 변경
+# enable remote access for other users 를 찾은 뒤에 
+host all all 0.0.0.0/0 trust 추가
+그 다음
+systemctl restart cloudera-scm-server-db.service로 재시작
+
+[사용자 지정 서비스]
+HDFS(Hadoop Distributed File System)
+YARN
+ZooKeoper
+
+데이터베이스 이름 : rman
+비밀번호 : 
+GTsvXRs9bI
+
+FTP 주소 : 118.130.22.117
+아이디 : big
+패스워드 P@ssw0rd
+포트 : 22
