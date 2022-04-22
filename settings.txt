@@ -1,0 +1,4 @@
+Linux 명령어
+passwd <- 계정 비밀번호 변경
+gpasswd 계정명 wheel <- 그룹으로 묶음
+visudo를 이용하여 Allows people in group wheel to run all commands에 %wheel ALL=(ALL) ALL의 주석을 제거하면 sudo라는 명령어를 사용할 수 있다.
