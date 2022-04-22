@@ -2,3 +2,8 @@ Linux 명령어
 passwd <- 계정 비밀번호 변경
 gpasswd 계정명 wheel <- 그룹으로 묶음
 visudo를 이용하여 Allows people in group wheel to run all commands에 %wheel ALL=(ALL) ALL의 주석을 제거하면 sudo라는 명령어를 사용할 수 있다.
+$ hdfs dfs -put Sample.txt /tmp <- Sample.txt 파일이 HDFS의 /tmp 디렉터리로 저장된다.
+$ hdfs dfs -ls /tmp <- HDFS에 저장한 파일 확인 (앞서 /tmp 디렉터리에 저장한 “Sample.txt" 파일의 목록이 조회된다.)
+$ hdfs dfs -cat /tmp/Sample.txt <- HDFS에 저장한 파일 내용 보기 ("Sample.txt" 파일의 내용을 보여준다.)
+$ hdfs dfs -stat '%b %o kr %u %n' /tmp/Sample.txt <- HDFS에 저장한 파일 상태 확인
+파일 크기(b), 파일 블록 크기(%), 복제 수(%), 소유자명(%u), 파일명(%) 정보를 보여준다.
